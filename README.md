@@ -1,5 +1,9 @@
 # SQLite 데이터베이스 기반 CRUD 앱
 
+#### 20210312(금)
+- SQLite DB는 있으나, DBMS(oracle, mysql)가 없음. 개발자가 직접 코드로 데이터베이스 파일을 만든다.
+- > school.db
+
 #### 20210311(목)
 - 안드로이드 폰에 내장된 SQLite 데이터베이스를 기반으로 한 CRUD 앱 실습
 - 리사이클러뷰(RecyclerView) 사용
