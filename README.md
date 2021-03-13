@@ -2,22 +2,20 @@
 
 #### 20210312(금)
 - SQLite 생성 : DatabaseHelper.java 클래스 생성.
-
-```
-mDatabaseHelper = new DatabaseHelper(this, "school.db", null, 1);
-```
-
 - SQLite DB는 있으나, DBMS(oracle, mysql)가 없음. 개발자가 직접 코드로 데이터베이스 파일을 만든다.
 - > school.db
 
-```
+```java
+//데이터베이스헬퍼 클래스의 생성자 메소드 실행
+mDatabaseHelper = new DatabaseHelper(this, "school.db", null, 1);
+//데이터베이스 파일 만들기
 mSqLiteDatabase = mDatabaseHelper.getReadableDatabase();
 ```
 
 - StudentVO(Value Objec) 생성
 - DatabaseTables.java 계약서(Contract) 생성 (->필드명을 한 곳에서 관리)
 
-```
+```java
 public class DatabaseTables {
     // 학생 테이블용 필드값 클래스로 지정(아래)
     public static class StudentTable implements BaseColumns {
@@ -31,7 +29,7 @@ public class DatabaseTables {
 
 - student 테이블 생성.  MainActivity 에서 insert 더미 실행.
 
-```
+```java
 ContentValues contentValues = new ContentValues();
 contentValues.put(StudentTable.GRADE, 1);
 contentValues.put(StudentTable.NUMBER, 20210102);
