@@ -8,6 +8,7 @@ import android.provider.BaseColumns;
  */
 public class DatabaseTables {
     // 학생 테이블용 필드값 클래스로 지정(아래)
+
     public static class StudentTable implements BaseColumns {
         public static final String TABLE_NAME = "student";
         public static final String GRADE = "grade";

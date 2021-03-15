@@ -1,5 +1,9 @@
 # SQLite 데이터베이스 기반 CRUD 앱
 
+#### 20210315(월)
+- 어댑터 : 리사이클러뷰(MainActivity)와 SQLite를 데이터바인딩하기 위해서 중간 매개체로 사용하는 클래스
+- > 리사이클러 어댑터클래스 안에 뷰홀더 클래스가 포함
+
 #### 20210312(금)
 - SQLite 생성 : DatabaseHelper.java 클래스 생성.
 - SQLite DB는 있으나, DBMS(oracle, mysql)가 없음. 개발자가 직접 코드로 데이터베이스 파일을 만든다.
