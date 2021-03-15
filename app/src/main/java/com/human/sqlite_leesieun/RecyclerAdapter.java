@@ -31,7 +31,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     //ItemViewHolder클래스가 호출되면 자동으로 onCreateViewHolder메소드가 실행됨
     @NonNull
     @Override
-    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //뷰홀더 생성
         //레이아웃 xml을 자바단에서 화면을 로딩할 때 inflate 메소드 사용(아래) => startActivity(화면을 띄울 때)
         //inflate() 매개변수 xml 디자인이 필수. 리사이클러뷰 내에 들어가는 아이템디자인 생성
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item,parent,false);
@@ -46,7 +46,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     //뷰홀더를 클릭했을 때, 뷰홀더와 포지션pos를 이용해서 입력박스에 기존 값 출력하기
     //개발자가 호출하는 것이 아니고, 안드로이드의 레이아웃 관리자 프로그램이 자동으로 호출
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) { //뷰홀더가 재활용될 떄 샐행
         //구현은 개발자가 코딩함(아래)
         StudentVO studentVO = (StudentVO) mList.get(position); //1개 레코드 저장
         //리사이클러뷰의 recyclerview_item.xml 디자인에 데이터를 출력한다.
@@ -58,7 +58,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     @Override
     public int getItemCount() {
         return mList.size();
-    }
+    }  //아이템 개수 조회
 
     //중첩클래스 생성(아래_리사이클러뷰 컴포넌트에 데이터를 홀딩시키는 클래스)
     public class ItemViewHolder extends RecyclerView.ViewHolder {

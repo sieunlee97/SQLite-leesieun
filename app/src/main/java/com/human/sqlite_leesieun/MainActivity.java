@@ -34,13 +34,14 @@ public class MainActivity extends AppCompatActivity {
         //테스트로 mSqLiteDatabase 객체를 이용해서 더미데이터 인서트 테스트
         //자바의 HashMap형식과 비슷한 안드로이드 데이터형 ContentValues형
 
-        ContentValues contentValues = new ContentValues();
+        /*ContentValues contentValues = new ContentValues();
         contentValues.put(StudentTable.GRADE, 3);
         contentValues.put(StudentTable.NUMBER, 20210103);
         contentValues.put(StudentTable.NAME, "아무개");
-        mSqLiteDatabase.insert(StudentTable.TABLE_NAME, null, contentValues);
+        mSqLiteDatabase.insert(StudentTable.TABLE_NAME, null, contentValues);*/
 
-        //mItemList에 select쿼리 결과 값이 set되어있어야 함
+        //mItemList에 select쿼리 결과 값이 set되어있어야 함.
+
         //List 실행 리사이클러 어댑터 바인딩(아래)
         bindList(); //여기서 공간 마련
         //List 반영(화면출력)

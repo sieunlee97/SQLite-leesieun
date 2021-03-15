@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="학년"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/item_number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="학번"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/item_name"
         app:layout_constraintStart_toEndOf="@+id/item_grade"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,6 +37,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="이름"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_number"
         app:layout_constraintTop_toTopOf="parent" />
