@@ -1,8 +1,11 @@
 package com.human.sqlite_leesieun;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import com.human.sqlite_leesieun.DatabaseTables.StudentTable;
@@ -30,16 +33,14 @@ public class MainActivity extends AppCompatActivity {
         mSqLiteDatabase = mDatabaseHelper.getReadableDatabase();
         //테스트로 mSqLiteDatabase 객체를 이용해서 더미데이터 인서트 테스트
         //자바의 HashMap형식과 비슷한 안드로이드 데이터형 ContentValues형
-        /*
+
         ContentValues contentValues = new ContentValues();
-        contentValues.put(StudentTable.GRADE, 1);
-        contentValues.put(StudentTable.NUMBER, 20210102);
-        contentValues.put(StudentTable.NAME, "홍길동");
+        contentValues.put(StudentTable.GRADE, 3);
+        contentValues.put(StudentTable.NUMBER, 20210103);
+        contentValues.put(StudentTable.NAME, "아무개");
         mSqLiteDatabase.insert(StudentTable.TABLE_NAME, null, contentValues);
-        */
 
         //mItemList에 select쿼리 결과 값이 set되어있어야 함
-
         //List 실행 리사이클러 어댑터 바인딩(아래)
         bindList(); //여기서 공간 마련
         //List 반영(화면출력)
@@ -56,6 +57,24 @@ public class MainActivity extends AppCompatActivity {
     private List getAllData() { 
         List tableList = new ArrayList(); //studentTable 내용이 담길 예정
         //쿼리작업
+        String[] projection ={
+                StudentTable._ID, //AutoIncrement 자동증가 PK
+                StudentTable.GRADE,
+                StudentTable.NUMBER,
+                StudentTable.NAME
+        };
+        //쿼리 템플릿 메서드 사용(아래), Cursor는 레코드 위치를 가지는 테이블
+        Cursor cursor = mSqLiteDatabase.query(StudentTable.TABLE_NAME, projection,null,null,null, null, "_id desc");
+        //반복문 조건은 커서의 다음 레코드가 존재할 때까지
+        while(cursor.moveToNext()){//StudentTable에 있는 필드값을 하나씩 뽑아서
+            //tableList 리스트객체에 1레코드씩 저장
+            int p_id = cursor.getColumnIndexOrThrow(StudentTable._ID);
+            int p_grade = cursor.getInt(cursor.getColumnIndexOrThrow(StudentTable.GRADE));
+            int p_number = cursor.getInt(cursor.getColumnIndexOrThrow(StudentTable.NUMBER));
+            String p_name = cursor.getString(cursor.getColumnIndexOrThrow(StudentTable.NAME));
+            //매개변수
+            tableList.add(new StudentVO(p_id, p_grade, p_number, p_name));
+        }
         return tableList;
     }
 
@@ -63,5 +82,10 @@ public class MainActivity extends AppCompatActivity {
     private void bindList() {
         //객체 생성
         mRecyclerAdapter = new RecyclerAdapter(mItemList);
+        //리사이클러뷰xml과 어댑터 바인딩
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true); //리사이클러 뷰의 높이를 고정한다.
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(mRecyclerAdapter); //실제 attach(바인딩)
     }
 }

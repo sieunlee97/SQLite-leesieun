@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 public class DatabaseHelper extends SQLiteOpenHelper {
     //멤버 변수 생성(쿼리구문)
     private String CreateTableStudent = "CREATE TABLE student(" +
-            "id INTEGER PRIMARY KEY" +
+            "_id INTEGER PRIMARY KEY" +
             ", grade INTEGER" +
             ", number INTEGER" +
             ", name TEXT" +

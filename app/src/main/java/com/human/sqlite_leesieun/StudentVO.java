@@ -6,9 +6,17 @@ package com.human.sqlite_leesieun;
 public class StudentVO {
     // VO 클래스의 멤버변수
     private int mId; // Cursor id (레코드-한줄 아이디)
-    private int mGade; //학년
+    private int mGrade; //학년
     private int mNumber; //학번
     private String mName; //이름
+
+    public StudentVO(int p_id, int p_grade, int p_number, String p_name) {
+        mId = p_id;
+        mGrade = p_grade;
+        mNumber = p_number;
+        mName = p_name;
+    }
+
 
     public int getmId() {
         return mId;
@@ -19,11 +27,11 @@ public class StudentVO {
     }
 
     public int getmGade() {
-        return mGade;
+        return mGrade;
     }
 
     public void setmGade(int mGade) {
-        this.mGade = mGade;
+        this.mGrade = mGade;
     }
 
     public int getmNumber() {
