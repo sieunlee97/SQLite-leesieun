@@ -26,12 +26,12 @@ public class StudentVO {
         this.mId = mId;
     }
 
-    public int getmGade() {
+    public int getmGrade() {
         return mGrade;
     }
 
-    public void setmGade(int mGade) {
-        this.mGrade = mGade;
+    public void setmGrade(int mGade) {
+        this.mGrade = mGrade;
     }
 
     public int getmNumber() {

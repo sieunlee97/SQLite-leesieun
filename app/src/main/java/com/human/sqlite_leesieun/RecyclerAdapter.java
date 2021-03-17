@@ -50,15 +50,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         //구현은 개발자가 코딩함(아래)
         StudentVO studentVO = (StudentVO) mList.get(position); //1개 레코드 저장
         //리사이클러뷰의 recyclerview_item.xml 디자인에 데이터를 출력한다.
-        holder.itemGrade.setText(Integer.toString(studentVO.getmGade()));
+        holder.itemGrade.setText(Integer.toString(studentVO.getmGrade()));
         holder.itemNumber.setText(Integer.toString(studentVO.getmNumber()));
         holder.itemName.setText(studentVO.getmName());
     }
 
     @Override
     public int getItemCount() {
-        return mList.size();
-    }  //아이템 개수 조회
+        return mList.size(); //아이템 개수 조회
+    }
 
     //중첩클래스 생성(아래_리사이클러뷰 컴포넌트에 데이터를 홀딩시키는 클래스)
     public class ItemViewHolder extends RecyclerView.ViewHolder {
