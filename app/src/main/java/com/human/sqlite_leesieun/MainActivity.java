@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEditTextGrade;
     private EditText mEditTextNumber;
     private EditText mEditTextName;
-    //어댑터에서 선택한 값확인 변수
+    //어댑터에서 선택한 값 확인 변수
     private int currentCursorId = -1;
     //버튼 Button 변수선언
     private Button mButtonInsert;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     //가상키보드제어하는 변수선언
     private InputMethodManager mInputMethodManager;
 
-    //메인액티비티가 실행되면, 자동으로 실행되는 메서드 onCreate 입니다.
+    //MainActivity가 실행되면, 자동으로 실행되는 메서드 = onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);//부모 클래스 초기화(메모리로딩)
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         mDatabaseHelper = new DatabaseHelper(this,"school.db",null,1);
         //데이터베이스 파일 만들기(아래)
         mSqLiteDatabase = mDatabaseHelper.getWritableDatabase();//싱클톤으로 만들어진 매서드
-        //싱글톤만들었다는 의미는 인스턴스는 1번만 실행됨.즉, school.db파일이 있으면, 생성않됨.
+        //싱글톤만들었다는 의미는 인스턴스는 1번만 실행됨. 즉, school.db파일이 있으면, 생성 안 됨.
         //테스트로 mSqLiteDatabse 객체를 이용해서 더미데이터 인서트 테스트
         //자바의 HashMap형식과 비슷한 안드로이드 데이터형 ContentsValues형
         /*ContentValues contentValues = new ContentValues();
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         //멤버변수로 객체 초기화(아래)
         bindObject();
         //List 실행 리사이클러 어댑터 바인딩(아래)
-        bindList();//여서는 공간마련
+        bindList();//공간마련
         //List 반영(화면출력: 입력,수정,삭제시 화면 리프레시가 필요하고, 구현하는 메서드)
         updateList();//여기에서 데이터바인딩되서 RecyclerAdaper가 화면에 재생됩니다.
         //update버튼 클릭이벤트(아래)
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         btnInsert();
     }
 
-    //EditText 콤포넌트 입력값 없애기
+    //EditText 컴포넌트 입력값 없애기
     private void clearComponent() {
         //EditText객체의 값 비우기
         mEditTextGrade.setText("");
@@ -81,8 +81,31 @@ public class MainActivity extends AppCompatActivity {
         mEditTextName.setText("");
         currentCursorId = -1;//현재 테이블커서ID가 지워졌으니, 초기화시킴
     }
-    //insert버튼 클릭이벤트(아래)
+//insert버튼 클릭이벤트(아래) ============================================================================================
     private void btnInsert() {
+        mButtonInsert.setOnClickListener(v -> {
+            //"".equals()공백체크 && 오브젝트 == null체크 2개의 조건을 1개로 해결한 매서드 isEmpty() 로 개선.
+            if(mEditTextGrade.getText().toString().isEmpty() || "".equals(mEditTextNumber.getText().toString())) {
+                Toast.makeText(getApplicationContext(),"학년/학번 값은 필수 입니다.",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            final int grade = Integer.parseInt(mEditTextGrade.getText().toString());
+            final int number = Integer.parseInt(mEditTextNumber.getText().toString());
+            final String name = mEditTextName.getText().toString();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(StudentTable.GRADE,grade);
+            contentValues.put(StudentTable.NUMBER,number);
+            contentValues.put(StudentTable.NAME,name);
+            //insert쿼리 호출
+            insertData(contentValues);
+            //EditText 컴포넌트 입력값 없애기
+            clearComponent();
+            //화면 리프레스
+            updateList();
+            //키보드 숨기기
+            mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+        });
+        /*
         mButtonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,13 +131,28 @@ public class MainActivity extends AppCompatActivity {
                 mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
+        */
     }
     //SQLiteDatabase 템플릿 insert메서드 실행
     private void insertData(ContentValues contentValues) {
         mSqLiteDatabase.insert(StudentTable.TABLE_NAME,null,contentValues);
     }
-    //delete버튼 클릭이벤트(아래)
+
+//delete버튼 클릭이벤트(아래) ============================================================================================
     private void btnDelete() {
+        mButtonDelete.setOnClickListener(v -> {
+            if(currentCursorId == -1){
+                Toast.makeText(getApplicationContext(), "선택된 값이 없습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            //삭제쿼리 호출
+            deleteData(currentCursorId);
+            //EditText콤포넌트 값 없애기
+            clearComponent();
+            //리사이클러뷰 화면 리프레시(아래)
+            updateList();
+        });
+        /*
         mButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,14 +168,30 @@ public class MainActivity extends AppCompatActivity {
                 updateList();
             }
         });
+    */
     }
     //SQLiteDatabase 템플릿 delete메서드 실행
     private void deleteData(int currentCursorId) {
-        mSqLiteDatabase.delete(StudentTable.TABLE_NAME,StudentTable._ID+"="+currentCursorId,null);
+        mSqLiteDatabase.delete(StudentTable.TABLE_NAME, StudentTable._ID + "=" + currentCursorId, null);
     }
 
-    //update버튼 클릭이벤트(아래)
+//update버튼 클릭이벤트(아래) ============================================================================================
     private void btnUpdate() {
+        mButtonUpdate.setOnClickListener(v -> {
+            if(currentCursorId == -1){
+                Toast.makeText(getApplicationContext(), "선택된 값이 없습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            //DB갱신
+            final int grade = Integer.parseInt(mEditTextGrade.getText().toString());
+            final int number = Integer.parseInt(mEditTextNumber.getText().toString());
+            final String name = mEditTextName.getText().toString();
+            //쿼리메서드 호출
+            updateData(currentCursorId,grade,number,name);
+            //화면 리프레시 재생(아래)
+            updateList();
+        });
+        /*
         mButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
                 updateList();
             }
         });
+     */
     }
     //update버튼에 대한 쿼리
     private void updateData(int currentCursorId, int grade, int number, String name) {
@@ -217,6 +272,17 @@ public class MainActivity extends AppCompatActivity {
         //객체 생성
         mRecyclerAdapter = new RecyclerAdapter(mItemList);
         //어댑터의 OnItemClickListener 추가예정....
+        //애로우 함수는 함수 이름이 없음 = 콜백 함수 = 자동실행함수
+        mRecyclerAdapter.setOnItemClickListener((v, position) -> {
+            StudentVO studentVO = (StudentVO) mItemList.get(position);
+            //디버그
+            currentCursorId = studentVO.getmId();
+            Toast.makeText(getApplicationContext(),"현재 선택한 커서레코드 ID는 "+currentCursorId,Toast.LENGTH_SHORT).show();
+            mEditTextGrade.setText(Integer.toString(studentVO.getmGrade()));
+            mEditTextNumber.setText(Integer.toString(studentVO.getmNumber()));
+            mEditTextName.setText(studentVO.getmName());
+        });
+        /*
         mRecyclerAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -229,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
                 mEditTextName.setText(studentVO.getmName());
             }
         });
+        */
         //리사이클러뷰xml과 어댑터 바인딩(attach) No adapter attached
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);//리사이클러 뷰의 높이를 고정한다.
